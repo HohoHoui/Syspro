@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+int main(int argc, char *argv[]){
+	int child, pid, status;
+	
+	//pid = fork();
+	
+	if(fork() == 0){
+		execvp(argv[1], &argv[1]);
+		fprintf(stderr, "%s : execute error\n", argv[1]);
+		exit(1);
+		}
+	if(fork() == 0){
+		execvp(argv[2], &argv[2]);
+		fprintf(stderr, "%s : execute error\n", argv[2]);
+		exit(2);
+	}
+	if(fork() == 0){
+		execvp(argv[3], &argv[3]);
+		fprintf(stderr, "%s : execute error\n", argv[3]);
+		exit(3);
+	}
+	printf("end\n");
+}
