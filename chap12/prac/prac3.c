@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#define MAXLINE 100
 
-int main() {
+int main(int argc, char *argv[]) {
     int pipefd[2];
     pid_t child_pid;
 
@@ -40,8 +41,14 @@ int main() {
         close(pipefd[0]); // 복사가 끝났으므로 파이프 닫음
 
         // wc 명령어 실행
-        execlp("wc", "wc", NULL);
-        perror("execlp (wc)");
+        if (argc == 1) {
+            execlp("wc", "wc", NULL);
+        } else {
+            // 명령어 인자가 있을 경우 실행
+            execvp(argv[1], &argv[1]);
+        }
+
+        perror("exec");
         exit(EXIT_FAILURE);
     }
 
